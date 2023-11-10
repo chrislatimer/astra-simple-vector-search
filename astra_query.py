@@ -3,54 +3,55 @@ import embedding_create
 import os
 import json
 
+# Fetching necessary environment variables for AstraDB configuration
 ASTRA_DB_APPLICATION_TOKEN = os.environ.get("ASTRA_DB_APPLICATION_TOKEN")
 ASTRA_DB_API_ENDPOINT = os.environ.get("ASTRA_DB_API_ENDPOINT")
 ASTRA_DB_KEYSPACE = os.environ.get("ASTRA_DB_KEYSPACE")
 COLLECTION_NAME = "town_content"
 
-# Create a list of queries
-queries = []
-queries.append("What are the locations within Shadowfen?")
-queries.append("Who is Eldermarsh Thorne?")
-queries.append("Who is Brom Stoutfist?")
-queries.append("What is The Gloomwater Brewery?")
-queries.append("What is the terrain like surrounding Shadowfen?")
-queries.append("Who created Shadowfen?")
-queries.append("What is the climate of Shadowfen?")
-queries.append("What is the population of Shadowfen?")
-queries.append("What is the history of Shadowfen?")
-queries.append("Where can I get a drink in Shadowfen?")
+# Preparing a list of queries about the town Shadowfen
+queries = [
+    "What are the locations within Shadowfen?",
+    "Who is Eldermarsh Thorne?",
+    "Who is Brom Stoutfist?",
+    "What is The Gloomwater Brewery?",
+    "What is the terrain like surrounding Shadowfen?",
+    "Who created Shadowfen?",
+    "What is the climate of Shadowfen?",
+    "What is the population of Shadowfen?",
+    "What is the history of Shadowfen?",
+    "Where can I get a drink in Shadowfen?",
+]
 
-# Create embeddings for each query
+# Generating embeddings for each query using a custom embedding creation function
 embeddings = embedding_create.create_embeddings(queries)
 
-# Initialize connection to Astra DB
+# Establishing a connection to Astra DB with the provided credentials and keyspace
 db = AstraDB(
     token=ASTRA_DB_APPLICATION_TOKEN,
     api_endpoint=ASTRA_DB_API_ENDPOINT,
     namespace=ASTRA_DB_KEYSPACE,
 )
 
-# Define the db collection
+# Accessing the specified collection in the Astra DB
 collection = db.collection(collection_name=COLLECTION_NAME)
 
-# Perform a similarity search for each query and print the results
+# Iterating through each query to perform a similarity search in the database
 for index, query in enumerate(queries):
+    # Converting the embedding to a list for the query
     embedding = embeddings[index].tolist()
-    query = queries[index]
+
+    # Defining the sorting, options, and projection for the database query
     sort = {"$vector": embedding}
     options = {"limit": 2}
     projection = {"$similarity": 1, "text": 1}
+
+    # Executing the find operation on the collection with the specified parameters
     document_list = collection.find(sort=sort, options=options, projection=projection)
 
-    print(f"Query: {query}")
-    proper_json_string = str(document_list).replace("'", '"')
-    parsed_json = json.loads(proper_json_string)
-    print(json.dumps(parsed_json, indent=4, sort_keys=True))
-
-    # # Specify the filename
-    # filename = "output.txt"
-
-    # # Open the file in write mode ('w') and write the contents
-    # with open(filename, "w") as file:
-    #     file.write(str(document_list))
+    print(query)
+    # Iterating through the retrieved documents to print their content
+    for document in document_list["data"]["documents"]:
+        print(document["text"])
+        print(document["$similarity"])
+        print("\n\n")
