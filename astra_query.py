@@ -1,7 +1,6 @@
 from astrapy.db import AstraDB
 import embedding_create
 import os
-import json
 
 # Fetching necessary environment variables for AstraDB configuration
 ASTRA_DB_APPLICATION_TOKEN = os.environ.get("ASTRA_DB_APPLICATION_TOKEN")
