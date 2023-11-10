@@ -1,4 +1,4 @@
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoModel
 
 
 def create_embeddings(paragraphs):
