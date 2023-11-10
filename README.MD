@@ -156,18 +156,20 @@ python ./astra_query.py
 
 If this runs successfully, you'll see each query printed to the console with the two most similar chunks, along with a similarity score, that we created in the previous step. This will look something like this:
 
-````
+```
 Who is Eldermarsh Thorne?
-1. **Eldermarsh Thorne**: The current High Druid of the Marshbinders, Thorne is a figure of awe and a little fear, given his reputed ability to converse with the swamp itself. With his staff carved from a blackened root and his cloak of woven reeds, he is the embodiment of the swamp's enigmatic nature.
+Eldermarsh Thorne**: The current High Druid of the Marshbinders, Thorne is a figure of awe and a little fear, given his reputed ability to converse with the swamp itself. With his staff carved from a blackened root and his cloak of woven reeds, he is the embodiment of the swamp's enigmatic nature.
 0.9189216
 
 
-1. **High Druid of the Marshbinders**: The leader of the druid circle, currently Eldermarsh Thorne, holds a permanent seat on the council. They represent the interests of the natural world and ensure that the town's actions are in harmony with the swamp.
-0.89715797```
+High Druid of the Marshbinders**: The leader of the druid circle, currently Eldermarsh Thorne, holds a permanent seat on the council. They represent the interests of the natural world and ensure that the town's actions are in harmony with the swamp.
+0.89715797
+```
 
 Again, you can play with the `queries` array inside of `astra_query.py` to see what results you get for any queries you wish.
 
-```# Preparing a list of queries about the town Shadowfen
+```
+# Preparing a list of queries about the town Shadowfen
 queries = [
     "What are the locations within Shadowfen?",
     "Who is Eldermarsh Thorne?",
@@ -179,10 +181,11 @@ queries = [
     "What is the population of Shadowfen?",
     "What is the history of Shadowfen?",
     "Where can I get a drink in Shadowfen?",
-]```
+]
+```
 
 You may want to skim through `towns/shadowfen.txt` as well to get ideas for questions to see if the relevant chunks you'd like to return are actually returned.
 
 # Feedback
+
 Please open an issue with any feedback or bugs you find.
-````
